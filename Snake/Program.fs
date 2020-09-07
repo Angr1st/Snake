@@ -22,8 +22,22 @@ type GameField =
     MoveDirection:Direction
     }
 
+type StaticField =
+    {
+    X:int
+    Y:int
+    }
+
 type GameFieldType =
-    | Empty of GameField
+    | HorizontalBorder of StaticField
+    | VerticalBorder of StaticField
+    | UpperLeftCorner of StaticField
+    | LowerLeftCorner of StaticField
+    | LeftThreeWay of StaticField
+    | RightThreeWay of StaticField
+    | UpperRightCorner of StaticField
+    | LowerRightCorner of StaticField
+    | Empty of StaticField
     | Apple of GameField
     | SnakeHead of GameField
     | SnakeBody of GameField
@@ -34,6 +48,14 @@ type GameFieldType =
             | Apple _-> "O"
             | SnakeHead _-> "■"
             | SnakeBody _-> "■"
+            | HorizontalBorder _-> "═"
+            | VerticalBorder _-> "║"
+            | UpperLeftCorner _-> "╔"
+            | UpperRightCorner _-> "╗"
+            | LowerLeftCorner _-> "╚"
+            | LowerRightCorner _-> "╝"
+            | LeftThreeWay _-> "╣"
+            | RightThreeWay _-> "╠"
 
 type GameState = 
     {
