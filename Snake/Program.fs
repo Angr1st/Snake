@@ -71,16 +71,33 @@ type GlobalGameState =
     ScoreArea:ScoreBoard
     } 
 
+let setupBorder (completeGameField:GameFieldType[,]) =
+    completeGameField.[0,18] <- UpperLeftCorner {X=0;Y=18}
+    completeGameField.[18,18] <- UpperRightCorner {X=18;Y=18}
+    completeGameField.[0,0] <- LowerLeftCorner {X=0;Y=0}
+    completeGameField.[18,0] <- LowerRightCorner {X=18;Y=0}
+    completeGameField.[]
+
 let initGame = 
+
+//               |
+//               |
+//               |
+//  -------------+------------ x comes first in the 2d Array and zero is the bottom left
+//               |
+//               |
+//               y
     let completeGameField = Array2D.create 17 19 Empty
     let scoreArea = completeGameField.[1..15,1]
     let matchField = completeGameField.[1..15,4..17]
+    
     {
     Score = 0
     CompleteMatchField = completeGameField
-    Matchfield = {MatchField=matchField}
-    ScoreArea = {ScoreFields= scoreArea}
+    Matchfield = {MatchField = matchField}
+    ScoreArea = {ScoreFields = scoreArea}
     }
+
 [<EntryPoint>]
 let main argv =
     
