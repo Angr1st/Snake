@@ -112,10 +112,12 @@ let initGame =
 //               |
 //               |
 //               y
+
     let completeGameField = 
         Array2D.create maxX maxY Empty
         |> setupBorder
     let scoreArea = completeGameField.[1..(maxIndexX-1),1]
+    scoreArea.[scoreArea.Length - 1] <- ScoreField '0'
     let matchField = completeGameField.[1..(maxIndexX-1),4..(maxIndexY - 1)]
     
     {
