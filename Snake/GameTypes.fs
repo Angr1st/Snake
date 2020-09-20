@@ -1,7 +1,9 @@
 ﻿namespace Snake
 
+open Snake.Lib
+
 type IDisplayable =
-    abstract Display: unit -> string
+    abstract Display: unit -> char
 
 type TurnDirection =
     | LeftTurn = 0
@@ -43,19 +45,28 @@ type GameFieldType =
     interface IDisplayable with
         member g.Display() =
             match g with
-            | Empty -> " "
-            | Apple _-> "O"
-            | SnakeHead _-> "■"
-            | SnakeBody _-> "■"
-            | HorizontalBorder _-> "═"
-            | VerticalBorder _-> "║"
-            | UpperLeftCorner _-> "╔"
-            | UpperRightCorner _-> "╗"
-            | LowerLeftCorner _-> "╚"
-            | LowerRightCorner _-> "╝"
-            | LeftThreeWay _-> "╣"
-            | RightThreeWay _-> "╠"
-            | ScoreField c-> c.ToString()
+            | Empty -> ' '
+            | Apple _-> 'O'
+            | SnakeHead _-> '■'
+            | SnakeBody _-> '■'
+            | HorizontalBorder _-> '═'
+            | VerticalBorder _-> '║'
+            | UpperLeftCorner _-> '╔'
+            | UpperRightCorner _-> '╗'
+            | LowerLeftCorner _-> '╚'
+            | LowerRightCorner _-> '╝'
+            | LeftThreeWay _-> '╣'
+            | RightThreeWay _-> '╠'
+            | ScoreField c-> c
 
-module GameTypes =
+type GameState = {MatchField:MultiArraySegment<GameFieldType>}
 
+type ScoreBoard = {ScoreFields:ArraySegment<GameFieldType>}
+
+type GlobalGameState = 
+    {
+    Score:int
+    CompleteMatchField:GameFieldType[,]
+    Matchfield:GameState
+    ScoreArea:ScoreBoard
+    } 

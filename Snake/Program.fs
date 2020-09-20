@@ -1,18 +1,6 @@
-﻿// Learn more about F# at http://fsharp.org
-
-open System
-
-type GameState = {MatchField:GameFieldType[,]}
-
-type ScoreBoard = {ScoreFields:ArraySegment<GameFieldType>}
-
-type GlobalGameState = 
-    {
-    Score:int
-    CompleteMatchField:GameFieldType[,]
-    Matchfield:GameState
-    ScoreArea:ScoreBoard
-    } 
+﻿open System
+open Snake
+open Snake.Lib
 
 let maxX = 25
 
@@ -60,15 +48,18 @@ let initGame =
         Array2D.create maxX maxY Empty
         |> setupBorder
     let rowOne = completeGameField.[*,1]
-    let mutable scoreArea = ArraySegment<GameFieldType>(rowOne,1, (maxIndexX-1))
+    let mutable scoreArea = ArraySegment.Create(rowOne,1, (maxIndexX-1))
     scoreArea.Item (scoreArea.Count - 1) <- ScoreField '0'
-    let matchField = completeGameField.[1..(maxIndexX-1),4..(maxIndexY - 1)]
-    
+    let matchField = MultiArraySegment.Create( completeGameField, 1, 4 ,maxIndexX-1, maxIndexY - 5)
+    let score = {ScoreFields = scoreArea}
+    let matchT = {MatchField = matchField}
+    matchT.MatchField.[4,5] <- SnakeHead {X=4;Y=5;MoveDirection=Direction.Up}
+    score.[0] <- ScoreField '9'
     {
     Score = 0
     CompleteMatchField = completeGameField
     Matchfield = {MatchField = matchField}
-    ScoreArea = {ScoreFields = scoreArea}
+    ScoreArea = score
     }
 
 [<EntryPoint>]
@@ -77,8 +68,8 @@ let main argv =
         for j = 0 to maxIndexX do
             let symbol = (initGame.CompleteMatchField.[j,i] :> IDisplayable).Display()
             if j < maxIndexX then
-                printf "%s" symbol
+                printf "%c" symbol
             else
-                printfn "%s" symbol
+                printfn "%c" symbol
             
     0 // return an integer exit code
