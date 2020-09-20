@@ -35,11 +35,11 @@ namespace Snake.Lib
 
         private void CheckBounds(int i, int j)
         {
-            if (i < 0 || i + OffsetX > CountX)
+            if (i < 0 || i > CountX)
             {
                 throw new IndexOutOfRangeException($"i:{i}; OffsetX:{OffsetX}; CountX:{CountX}");
             }
-            if (j < 0 || j + OffsetY > CountY)
+            if (j < 0 || j > CountY)
             {
                 throw new IndexOutOfRangeException($"j:{j}; OffsetY:{OffsetY}; CountY:{CountY}");
             }

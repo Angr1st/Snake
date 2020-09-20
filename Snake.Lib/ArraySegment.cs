@@ -11,17 +11,19 @@ namespace Snake.Lib
     public class ArraySegment<T>
     {
         private T[,] InnerArray { get; }
-        private int Dimension { get; }
-        private int OffsetX { get; }
-        private int CountX { get; }
-        private int Length { get; }
+        private TwoDimensions Dimension { get; }
+        private int Offset { get; }
+        private int OtherDimensionOffset { get; }
+        private int Count { get; }
+        public int Length { get; }
 
-        private ArraySegment(T[,] multiDimensionalArray, int dimension, int offsetX,  int countX)
+        private ArraySegment(T[,] multiDimensionalArray, TwoDimensions dimension, int offset,  int count, int otherDimensionOffset)
         {
             InnerArray = multiDimensionalArray;
-            OffsetX = offsetX;
-            CountX = countX;
-            Length = multiDimensionalArray.GetLength(dimension) - countX;
+            Offset = offset;
+            OtherDimensionOffset = otherDimensionOffset;
+            Count = count;
+            Length = multiDimensionalArray.GetLength((int)dimension) - (offset + 1);
         }
 
         public T this[int i]
@@ -29,41 +31,52 @@ namespace Snake.Lib
             get
             {
                 CheckBound(i);
-                return InnerArray[Dimension, i + OffsetX];
+                return Dimension switch
+                {
+                    TwoDimensions.First => InnerArray[i + Offset, OtherDimensionOffset],
+                    TwoDimensions.Second => InnerArray[OtherDimensionOffset, i + Offset],
+                    _ => throw new InvalidOperationException($"The value of the enum is not recognised!")
+                };
             }
             set
             {
                 CheckBound(i);
-                InnerArray[Dimension, i + OffsetX] = value;
-            }
-        }
+                switch (Dimension)
+                {
+                    case TwoDimensions.First:
+                        InnerArray[i + Offset, OtherDimensionOffset] = value;
+                        break;
 
-        public int Count { 
-            get
-            {
-                return Length;
-            } 
+                    case TwoDimensions.Second:
+                        InnerArray[OtherDimensionOffset, i + Offset] = value;
+                        break;
+
+                    default:
+                        throw new InvalidOperationException($"The value of the enum is not recognised!");
+                }    
+            }
         }
 
         private void CheckBound(int i)
         {
-            if (i < 0 || i + OffsetX > CountX)
+            if (i < 0 || i > Count)
             {
-                throw new IndexOutOfRangeException($"i:{i}; OffsetX:{OffsetX}; CountX:{CountX}");
+                throw new IndexOutOfRangeException($"i:{i}; Offset:{Offset}; Count:{Count}; Dimension:{Dimension};");
             }
         }
 
-        public static ArraySegment<T> Create(T[,] multiDimensionalArray, TwoDimensions dimension, int offsetX, int countX)
+        public static ArraySegment<T> Create(T[,] multiDimensionalArray, TwoDimensions dimension, int offset, int count, int otherDimensionOffset)
         {
             if (multiDimensionalArray is null)
             {
                 throw new ArgumentNullException(nameof(multiDimensionalArray));
             }
 
-            CheckBound(multiDimensionalArray, offsetX, (int)dimension, nameof(offsetX));
-            CheckCount(multiDimensionalArray, offsetX, countX, (int)dimension, nameof(countX));
+            CheckBound(multiDimensionalArray, offset, (int)dimension, nameof(offset));
+            CheckBound(multiDimensionalArray, otherDimensionOffset, GetOpposite(dimension), nameof(otherDimensionOffset));
+            CheckCount(multiDimensionalArray, offset, count, (int)dimension, nameof(count));
 
-            return new ArraySegment<T>(multiDimensionalArray, (int)dimension, offsetX,  countX);
+            return new ArraySegment<T>(multiDimensionalArray, dimension, offset,  count, otherDimensionOffset);
 
             static void CheckBound(T[,] multiDimensionalArray, int bound, int dimension, string name)
             {
@@ -81,6 +94,14 @@ namespace Snake.Lib
                 }
                 CheckBound(array, bound + count, dimension, name);
             }
+
+            static int GetOpposite(TwoDimensions twoDimensions)
+                => twoDimensions switch
+                {
+                    TwoDimensions.First => (int)TwoDimensions.Second,
+                    TwoDimensions.Second => (int)TwoDimensions.First,
+                    _ => throw new InvalidOperationException($"The value of the enum is not recognised!")
+                };
         }
     }
 }
