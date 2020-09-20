@@ -1,5 +1,4 @@
-﻿open System
-open Snake
+﻿open Snake
 open Snake.Lib
 
 let maxX = 25
@@ -47,8 +46,8 @@ let initGame =
     let completeGameField = 
         Array2D.create maxX maxY Empty
         |> setupBorder
-    let scoreArea = ArraySegment.Create(completeGameField, TwoDimensions.First, 1,(maxIndexX-1))
-    scoreArea.[(scoreArea.Count - 1)] <- ScoreField '0'
+    let scoreArea = ArraySegment.Create(completeGameField, TwoDimensions.First, 1,(maxIndexX-1), 1)
+    scoreArea.[(scoreArea.Length - 1)] <- ScoreField '0'
     let matchField = MultiArraySegment.Create( completeGameField, 1, 4 ,maxIndexX-1, maxIndexY - 5)
     let score = {ScoreFields = scoreArea}
     let matchT = {MatchField = matchField}
