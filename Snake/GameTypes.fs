@@ -15,6 +15,11 @@ type Direction =
     | Left
     | Right
 
+type UserInput =
+    | Direction of Direction
+    | Waiting
+    | NoInput
+
 type GameField =
     {
     X:int //left and right
@@ -79,4 +84,9 @@ type GlobalGameState =
     CompleteMatchField:GameFieldType[,]
     Matchfield:GameState
     ScoreArea:ScoreBoard
-    } 
+    }
+
+type Snake = {Head:GameField}
+    with
+        member self.ToGameFieldType ()=
+            SnakeHead self.Head
