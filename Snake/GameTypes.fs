@@ -62,6 +62,16 @@ type GameFieldType =
 type GameState = {MatchField:MultiArraySegment<GameFieldType>}
 
 type ScoreBoard = {ScoreFields:ArraySegment<GameFieldType>}
+    with 
+        member self.SetScore value =
+            let stringValue = value.ToString().PadLeft(self.ScoreFields.Length, ' ').ToCharArray()
+
+            for i = self.ScoreFields.Length - 1 downto 0 do
+                let ch = stringValue.[i]
+                let field = match ch with
+                            | ' ' -> Empty
+                            | x -> ScoreField x
+                self.ScoreFields.[i] <- field
 
 type GlobalGameState = 
     {

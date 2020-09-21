@@ -47,12 +47,11 @@ let initGame =
         Array2D.create maxX maxY Empty
         |> setupBorder
     let scoreArea = ArraySegment.Create(completeGameField, TwoDimensions.First, 1,(maxIndexX-1), 1)
-    scoreArea.[(scoreArea.Length - 1)] <- ScoreField '0'
     let matchField = MultiArraySegment.Create( completeGameField, 1, 4 ,maxIndexX-1, maxIndexY - 5)
     let score = {ScoreFields = scoreArea}
     let matchT = {MatchField = matchField}
     matchT.MatchField.[4,5] <- SnakeHead {X=4;Y=5;MoveDirection=Direction.Up}
-    score.ScoreFields.[0] <- ScoreField '9'
+    score.SetScore 12456
     {
     Score = 0
     CompleteMatchField = completeGameField
