@@ -2,6 +2,8 @@
 
 open Snake.Lib
 open System
+open System.Diagnostics
+open System.Threading
 
 module Game =
     let maxX = 25
@@ -12,7 +14,7 @@ module Game =
 
     let maxIndexY = maxY - 1
 
-    let tick = 100
+    let tick :int64 = 1000L //ms
 
     let SetupBorder (completeGameField:GameFieldType[,]) =
         completeGameField.[0,maxIndexY] <- UpperLeftCorner {X=0;Y=maxIndexY}
@@ -72,26 +74,39 @@ module Game =
                 else
                     printfn "%c" symbol
 
-    let MatchKeyToDirection (input:ConsoleKeyInfo) =
-        match input.Key with
-        | ConsoleKey.UpArrow -> Direction Up
-        | ConsoleKey.DownArrow -> Direction Down
-        | ConsoleKey.LeftArrow -> Direction Left
-        | ConsoleKey.RightArrow -> Direction Right
+    let MatchKeyToDirection currentDirection (input:ConsoleKeyInfo)=
+        match input.Key, currentDirection with
+        | ConsoleKey.UpArrow, Up -> Direction Up
+        | ConsoleKey.UpArrow, Left -> Direction Up
+        | ConsoleKey.UpArrow, Right -> Direction Up
+        | ConsoleKey.DownArrow, Down -> Direction Down
+        | ConsoleKey.DownArrow, Left -> Direction Down
+        | ConsoleKey.DownArrow, Right -> Direction Down
+        | ConsoleKey.LeftArrow, Left -> Direction Left
+        | ConsoleKey.LeftArrow, Up -> Direction Left
+        | ConsoleKey.LeftArrow, Down -> Direction Left
+        | ConsoleKey.RightArrow, Right -> Direction Right
+        | ConsoleKey.RightArrow, Up -> Direction Right
+        | ConsoleKey.RightArrow, Down -> Direction Right
         | _ -> NoInput
 
     let GetInput tick currentDirection =
         let getConsoleKey elapsed =
             if Console.KeyAvailable then
                 Console.ReadKey(true)
-                |> MatchKeyToDirection
+                |> MatchKeyToDirection currentDirection    
             elif elapsed < tick then
                 Waiting
             else
                 NoInput
 
-        let userInput = getConsoleKey 0
-        0
+        let stopWatch = Stopwatch()
+        stopWatch.Start()
+        let userInput = getConsoleKey stopWatch.ElapsedMilliseconds
+        match userInput with
+        | Direction dir -> dir
+        | NoInput -> currentDirection
+        | Waiting -> 
         
 
     let GameLoop state input =
