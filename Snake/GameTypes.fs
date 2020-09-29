@@ -5,6 +5,17 @@ open Snake.Lib
 type IDisplayable =
     abstract Display: unit -> char
 
+type GameState =
+    | Init
+    | Running
+    | Won of int
+    | Lost of int
+    with 
+        member self.IsActive ()=
+            match self with
+            | Init | Running -> true
+            | _ -> false
+
 type TurnDirection =
     | LeftTurn = 0
     | RightTurn = 1
@@ -64,7 +75,7 @@ type GameFieldType =
             | RightThreeWay _-> '╠'
             | ScoreField c-> c
 
-type GameState = {MatchField:MultiArraySegment<GameFieldType>}
+type MatchFieldState = {MatchField:MultiArraySegment<GameFieldType>}
 
 type ScoreBoard = {ScoreFields:ArraySegment<GameFieldType>}
     with 
@@ -82,9 +93,10 @@ type GlobalGameState =
     {
     Score:int
     CompleteMatchField:GameFieldType[,]
-    Matchfield:GameState
+    Matchfield:MatchFieldState
     ScoreArea:ScoreBoard
     CurrentDirection:Direction
+    Status:GameState
     }
 
 type Snake = {Head:GameField}
