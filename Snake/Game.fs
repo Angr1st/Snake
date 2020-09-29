@@ -62,9 +62,11 @@ module Game =
         CompleteMatchField = completeGameField
         Matchfield = {MatchField = matchField}
         ScoreArea = score
+        CurrentDirection= Direction.Up
         }
 
     let PrintGame state =
+        state.ScoreArea.SetScore state.Score
         System.Console.Clear()
         for i = maxIndexY downto 0 do
             for j = 0 to maxIndexX do
@@ -90,6 +92,8 @@ module Game =
         | ConsoleKey.RightArrow, Down -> Direction Right
         | _ -> NoInput
 
+    let private stopWatch = Stopwatch()
+
     let GetInput tick currentDirection =
         let getConsoleKey elapsed =
             if Console.KeyAvailable then
@@ -100,16 +104,30 @@ module Game =
             else
                 NoInput
 
-        let stopWatch = Stopwatch()
-        stopWatch.Start()
-        let userInput = getConsoleKey stopWatch.ElapsedMilliseconds
-        match userInput with
-        | Direction dir -> dir
-        | NoInput -> currentDirection
-        | Waiting -> 
-        
+        let resetStopWatch (watch:Stopwatch) =
+            watch.Reset()
+            ()
 
-    let GameLoop state input =
-        0
+        let rec GetInput' ()=
+            let userInput = getConsoleKey stopWatch.ElapsedMilliseconds
+            match userInput with
+            | Direction dir -> 
+                do resetStopWatch stopWatch
+                dir
+            | NoInput ->
+                do resetStopWatch stopWatch
+                currentDirection
+            | Waiting -> 
+                do Thread.Sleep(100)
+                GetInput' ()
+
+        stopWatch.Start()
+        GetInput' ()        
+
+    let GetInput'' = GetInput tick
+
+    let GameLoop (state:GlobalGameState) (input:Direction -> Direction) :GlobalGameState=
+        let newDirection = input state.CurrentDirection
+        state
 
 

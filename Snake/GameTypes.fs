@@ -84,6 +84,7 @@ type GlobalGameState =
     CompleteMatchField:GameFieldType[,]
     Matchfield:GameState
     ScoreArea:ScoreBoard
+    CurrentDirection:Direction
     }
 
 type Snake = {Head:GameField}
