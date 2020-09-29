@@ -55,14 +55,14 @@ module Game =
         let matchField = MultiArraySegment.Create( completeGameField, 1, 4 ,maxIndexX-1, maxIndexY - 5)
         let score = {ScoreFields = scoreArea}
         let matchT = {MatchField = matchField}
-        matchT.MatchField.[4,5] <- SnakeHead {X=4;Y=5;MoveDirection=Direction.Up}
-        score.SetScore 12456
+        matchT.MatchField.[11,11] <- SnakeHead {X=11;Y=11;MoveDirection=Direction.Up}
         {
         Score = 0
         CompleteMatchField = completeGameField
         Matchfield = {MatchField = matchField}
         ScoreArea = score
         CurrentDirection= Direction.Up
+        Status= GameState.Init
         }
 
     let PrintGame state =
@@ -105,8 +105,11 @@ module Game =
                 NoInput
 
         let resetStopWatch (watch:Stopwatch) =
-            watch.Reset()
-            ()
+            do watch.Stop()
+            let remaining = tick - watch.ElapsedMilliseconds
+            do watch.Reset()
+            if remaining > 0L then
+                do Thread.Sleep(int remaining)
 
         let rec GetInput' ()=
             let userInput = getConsoleKey stopWatch.ElapsedMilliseconds
@@ -126,8 +129,16 @@ module Game =
 
     let GetInput'' = GetInput tick
 
-    let GameLoop (state:GlobalGameState) (input:Direction -> Direction) :GlobalGameState=
+    let GameLoop (input:Direction -> Direction) (state:GlobalGameState)  :GlobalGameState=
+        let initGame innerState =
+            if innerState.Status = GameState.Init then
+                {innerState with Status = Running}
+            else 
+                innerState
+
         let newDirection = input state.CurrentDirection
-        state
+        { initGame state with CurrentDirection = newDirection }
+
+    let GameLoop' = GameLoop GetInput''
 
 
