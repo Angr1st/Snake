@@ -4,18 +4,9 @@ open Snake.Lib
 open System
 open System.Diagnostics
 open System.Threading
+open Snake.GameConstants
 
 module Game =
-    let maxX = 25
-
-    let maxY = maxX + 3
-
-    let maxIndexX = maxX - 1
-
-    let maxIndexY = maxY - 1
-
-    let tick :int64 = 1000L //ms
-
     let SetupBorder (completeGameField:GameFieldType[,]) =
         completeGameField.[0,maxIndexY] <- UpperLeftCorner {X=0;Y=maxIndexY}
         completeGameField.[maxIndexX,maxIndexY] <- UpperRightCorner {X=maxIndexX;Y=maxIndexY}

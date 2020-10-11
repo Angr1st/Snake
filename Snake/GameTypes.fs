@@ -99,7 +99,18 @@ type GlobalGameState =
     Status:GameState
     }
 
-type Snake = {Head:GameField}
+type Snake = {Head:GameField;SnakeElements:GameField list}
     with
         member self.ToGameFieldType ()=
             SnakeHead self.Head
+
+module GameConstants =
+    let maxX = 25
+    
+    let maxY = maxX + 3
+    
+    let maxIndexX = maxX - 1
+    
+    let maxIndexY = maxY - 1
+    
+    let tick :int64 = 1000L //ms
