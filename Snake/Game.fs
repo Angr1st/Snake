@@ -43,10 +43,9 @@ module Game =
             Array2D.create maxX maxY Empty
             |> SetupBorder
         let scoreArea = ArraySegment.Create(completeGameField, TwoDimensions.First, 1,(maxIndexX-1), 1)
-        let matchField = MultiArraySegment.Create( completeGameField, 1, 4 ,maxIndexX-1, maxIndexY - 5)
+        let matchField = MultiArraySegment.Create( completeGameField, 1, 4 ,maxMatchfieldX, maxMatchfieldY)
         let score = {ScoreFields = scoreArea}
         let matchT = {MatchField = matchField}
-        matchT.MatchField.[11,11] <- SnakeHead {X=11;Y=11;MoveDirection=Direction.Up}
         {
         Score = 0
         CompleteMatchField = completeGameField
@@ -54,6 +53,7 @@ module Game =
         ScoreArea = score
         CurrentDirection= Direction.Up
         Status= GameState.Init
+        Snake = {Head={X=11;Y=11;MoveDirection=Direction.Up}; SnakeElements = List.Empty}
         }
 
     let PrintGame state =
@@ -128,7 +128,15 @@ module Game =
                 innerState
 
         let newDirection = input state.CurrentDirection
-        { initGame state with CurrentDirection = newDirection }
+        let newSnake = newDirection 
+                        |> SnakeLogic.moveSnake state.Snake
+
+        let pre = { initGame state with CurrentDirection = newDirection }
+        
+        pre.Matchfield.Clean()
+        pre.Matchfield.WriteSnake newSnake
+
+        {pre with Snake = newSnake}
 
     let GameLoop' = GameLoop GetInput''
 

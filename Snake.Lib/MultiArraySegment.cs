@@ -7,8 +7,8 @@ namespace Snake.Lib
         private T[,] InnerArray { get; }
         private int OffsetX { get; }
         private int OffsetY { get; }
-        private int CountX { get; }
-        private int CountY { get; }
+        public int CountX { get; }
+        public int CountY { get; }
 
         private MultiArraySegment(T[,] multiDimensionalArray, int offsetX, int offsetY, int countX, int countY)
         {
@@ -17,6 +17,17 @@ namespace Snake.Lib
             OffsetY = offsetY;
             CountX = countX;
             CountY = countY;
+        }
+
+        public void SetAllFields(T value)
+        {
+            for (int x = OffsetX; x < CountX; x++)
+            {
+                for (int y = OffsetY; y < CountY; y++)
+                {
+                    InnerArray[x, y] = value;
+                }
+            }
         }
 
         public T this[int i, int j]

@@ -75,8 +75,6 @@ type GameFieldType =
             | RightThreeWay _-> '╠'
             | ScoreField c-> c
 
-type MatchFieldState = {MatchField:MultiArraySegment<GameFieldType>}
-
 type ScoreBoard = {ScoreFields:ArraySegment<GameFieldType>}
     with 
         member self.SetScore value =
@@ -89,6 +87,42 @@ type ScoreBoard = {ScoreFields:ArraySegment<GameFieldType>}
                             | x -> ScoreField x
                 self.ScoreFields.[i] <- field
 
+type Snake = 
+    {
+        Head:GameField
+        SnakeElements:GameField list
+    }
+    with
+        member self.ToGameFieldType ()=
+            SnakeHead self.Head
+
+type MatchFieldState = {MatchField:MultiArraySegment<GameFieldType>}
+    with
+        member self.Clean ()=
+            self.MatchField.SetAllFields Empty
+
+        member self.WriteSnake (snake:Snake) =
+            self.MatchField.[snake.Head.X, snake.Head.Y] <- snake.ToGameFieldType()
+            snake.SnakeElements
+            |> List.iter (fun body -> self.MatchField.[body.X, body.Y] <- SnakeBody body)
+
+type SnakeAkkumulator = 
+    {
+        NewSnakeElements:GameField list
+        MovementDirection:Direction
+    }
+    with
+        member self.NewSnakeHead ()=
+            self.NewSnakeElements
+            |> List.tryHead
+
+        member self.ToSnake ()=
+            let head = self.NewSnakeHead()
+            if head.IsNone then
+                failwith "The Snake lost its head!"
+            else
+                {Head=head.Value;SnakeElements=self.NewSnakeElements}
+
 type GlobalGameState = 
     {
     Score:int
@@ -97,12 +131,8 @@ type GlobalGameState =
     ScoreArea:ScoreBoard
     CurrentDirection:Direction
     Status:GameState
+    Snake:Snake
     }
-
-type Snake = {Head:GameField;SnakeElements:GameField list}
-    with
-        member self.ToGameFieldType ()=
-            SnakeHead self.Head
 
 module GameConstants =
     let maxX = 25
@@ -112,5 +142,9 @@ module GameConstants =
     let maxIndexX = maxX - 1
     
     let maxIndexY = maxY - 1
-    
+
+    let maxMatchfieldX = maxIndexX-1
+
+    let maxMatchfieldY = maxIndexY - 5
+
     let tick :int64 = 1000L //ms
