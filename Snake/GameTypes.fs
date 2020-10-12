@@ -143,7 +143,7 @@ module GameConstants =
     
     let maxIndexY = maxY - 1
 
-    let maxMatchfieldX = maxIndexX-1
+    let maxMatchfieldX = maxIndexX - 2
 
     let maxMatchfieldY = maxIndexY - 5
 

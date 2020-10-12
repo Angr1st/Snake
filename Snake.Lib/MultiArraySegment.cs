@@ -21,11 +21,11 @@ namespace Snake.Lib
 
         public void SetAllFields(T value)
         {
-            for (int x = OffsetX; x < CountX; x++)
+            for (int x = 0; x <= CountX; x++)
             {
-                for (int y = OffsetY; y < CountY; y++)
+                for (int y = 0; y <= CountY; y++)
                 {
-                    InnerArray[x, y] = value;
+                    this[x, y] = value;
                 }
             }
         }
