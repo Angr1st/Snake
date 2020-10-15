@@ -5,6 +5,12 @@ open Snake.Lib
 type IDisplayable =
     abstract Display: unit -> char
 
+type IPosition =
+    abstract X:int
+        with get
+    abstract Y:int
+        with get
+
 type GameState =
     | Init
     | Running
@@ -54,7 +60,7 @@ type GameFieldType =
     | UpperRightCorner of StaticField
     | LowerRightCorner of StaticField
     | Empty
-    | Apple of GameField
+    | Apple of StaticField
     | SnakeHead of GameField
     | SnakeBody of GameField
     | ScoreField of char
@@ -122,6 +128,18 @@ type SnakeAkkumulator =
                 failwith "The Snake lost its head!"
             else
                 {Head=head.Value;SnakeElements=self.NewSnakeElements}
+
+
+
+type AppleGenerator =
+    {
+    Apple:StaticField
+    RandomGenerator:System.Random
+    }
+    with 
+        member self.GenerateNewApple (blockedFields:GameField list) maxX maxY=
+            0
+
 
 type GlobalGameState = 
     {
