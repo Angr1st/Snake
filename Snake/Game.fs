@@ -54,6 +54,7 @@ module Game =
         CurrentDirection= Direction.Up
         Status= GameState.Init
         Snake = {Head={X=11;Y=11;MoveDirection=Direction.Up}; SnakeElements = List.Empty}
+        AppleGen = {Apple={X=7;Y=7};RandomGenerator= System.Random()}
         }
 
     let PrintGame state =
@@ -120,6 +121,9 @@ module Game =
 
     let GetInput'' = GetInput tick
 
+    let GetNewApple (appleGen:AppleGenerator) (snake:Snake) =
+        appleGen.GenerateNewApple (snake.ToGameFieldList ()) GameConstants.maxMatchfieldX GameConstants.maxMatchfieldY
+
     let GameLoop (input:Direction -> Direction) (state:GlobalGameState)  :GlobalGameState=
         let initGame innerState =
             if innerState.Status = GameState.Init then
@@ -131,12 +135,21 @@ module Game =
         let newSnake = newDirection 
                         |> SnakeLogic.moveSnake state.Snake
 
-        let pre = { initGame state with CurrentDirection = newDirection }
+        let res = { initGame state with CurrentDirection = newDirection; Snake = newSnake }
         
-        pre.Matchfield.Clean()
-        pre.Matchfield.WriteSnake newSnake
+        let res =   
+            if res.Snake.Head.ToStaticField() = res.AppleGen.Apple then
+                let newScore = res.Score + 5;
+                do res.ScoreArea.SetScore newScore
+                {res with AppleGen = GetNewApple res.AppleGen res.Snake; Score = newScore}
+            else
+                res
 
-        {pre with Snake = newSnake}
+        do res.Matchfield.Clean()
+        do res.Matchfield.WriteApple res.AppleGen.Apple
+        do res.Matchfield.WriteSnake newSnake
+
+        res
 
     let GameLoop' = GameLoop GetInput''
 

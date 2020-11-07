@@ -42,9 +42,16 @@ type StaticField =
     X:int
     Y:int
     }
-    with
-        member s.ToGameField direction=
-            {X=s.X;Y=s.Y;MoveDirection=direction}
+    member s.ToGameField direction=
+        {X=s.X;Y=s.Y;MoveDirection=direction}
+
+    interface IPosition with
+        member self.X 
+            with get() =
+                self.X
+        member self.Y
+            with get() =
+                self.Y
 
 and GameField =
     {
@@ -52,9 +59,16 @@ and GameField =
     Y:int //up and down
     MoveDirection:Direction
     }
-    with
-        member s.ToStaticField() =
-            {X=s.X;Y=s.Y}
+    member s.ToStaticField() =
+        {X=s.X;Y=s.Y}
+
+    interface IPosition with
+        member self.X 
+            with get() =
+                self.X
+        member self.Y
+            with get() =
+                self.Y
 
 type GameFieldType =
     | HorizontalBorder of StaticField
@@ -108,6 +122,9 @@ type Snake =
         member self.ToGameFieldType ()=
             SnakeHead self.Head
 
+        member self.ToGameFieldList ()=
+            self.Head :: self.SnakeElements
+
 type MatchFieldState = {MatchField:MultiArraySegment<GameFieldType>}
     with
         member self.Clean ()=
@@ -117,6 +134,9 @@ type MatchFieldState = {MatchField:MultiArraySegment<GameFieldType>}
             self.MatchField.[snake.Head.X, snake.Head.Y] <- snake.ToGameFieldType()
             snake.SnakeElements
             |> List.iter (fun body -> self.MatchField.[body.X, body.Y] <- SnakeBody body)
+
+        member self.WriteApple (apple:StaticField) =
+            self.MatchField.[apple.X, apple.Y] <- Apple apple
 
 type SnakeAkkumulator = 
     {
@@ -135,8 +155,6 @@ type SnakeAkkumulator =
             else
                 {Head=head.Value;SnakeElements=self.NewSnakeElements}
 
-
-
 type AppleGenerator =
     {
     Apple:StaticField
@@ -154,7 +172,7 @@ type AppleGenerator =
                 else
                     findFreeField ()
 
-            findFreeField()
+            {self with Apple = findFreeField()}
 
 type GlobalGameState = 
     {
@@ -165,6 +183,7 @@ type GlobalGameState =
     CurrentDirection:Direction
     Status:GameState
     Snake:Snake
+    AppleGen:AppleGenerator
     }
 
 module GameConstants =
