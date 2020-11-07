@@ -26,4 +26,4 @@ module SnakeLogic =
                     {Y=oldGameElement.Y;X=oldGameElement.X + 1;MoveDirection=nextDirection}
 
         let newHead = snake.Head |> newGameElement direction
-        {Head=newHead; SnakeElements= List.Empty}
+        {Head=newHead; SnakeElements= List.Empty}//TODO Pass on the Direction from one SnakeElement to the next
