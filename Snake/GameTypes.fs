@@ -37,18 +37,24 @@ type UserInput =
     | Waiting
     | NoInput
 
-type GameField =
-    {
-    X:int //left and right
-    Y:int //up and down
-    MoveDirection:Direction
-    }
-
 type StaticField =
     {
     X:int
     Y:int
     }
+    with
+        member s.ToGameField direction=
+            {X=s.X;Y=s.Y;MoveDirection=direction}
+
+and GameField =
+    {
+    X:int //left and right
+    Y:int //up and down
+    MoveDirection:Direction
+    }
+    with
+        member s.ToStaticField() =
+            {X=s.X;Y=s.Y}
 
 type GameFieldType =
     | HorizontalBorder of StaticField
@@ -138,8 +144,17 @@ type AppleGenerator =
     }
     with 
         member self.GenerateNewApple (blockedFields:GameField list) maxX maxY=
-            0
+            let rec findFreeField () =
+                let nextX = self.RandomGenerator.Next(maxX)
+                let nextY = self.RandomGenerator.Next(maxY)
+                if blockedFields 
+                    |> List.tryFind (fun t -> t.X = nextX && t.Y = nextY)
+                    |> Option.isNone then
+                    {X=nextX;Y=nextY}
+                else
+                    findFreeField ()
 
+            findFreeField()
 
 type GlobalGameState = 
     {
