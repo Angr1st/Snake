@@ -5,12 +5,6 @@ open Snake.Lib
 type IDisplayable =
     abstract Display: unit -> char
 
-type IPosition =
-    abstract X:int
-        with get
-    abstract Y:int
-        with get
-
 type GameState =
     | Init
     | Running
@@ -45,14 +39,6 @@ type StaticField =
     member s.ToGameField direction=
         {X=s.X;Y=s.Y;MoveDirection=direction}
 
-    interface IPosition with
-        member self.X 
-            with get() =
-                self.X
-        member self.Y
-            with get() =
-                self.Y
-
 and GameField =
     {
     X:int //left and right
@@ -61,14 +47,6 @@ and GameField =
     }
     member s.ToStaticField() =
         {X=s.X;Y=s.Y}
-
-    interface IPosition with
-        member self.X 
-            with get() =
-                self.X
-        member self.Y
-            with get() =
-                self.Y
 
 type GameFieldType =
     | HorizontalBorder of StaticField
