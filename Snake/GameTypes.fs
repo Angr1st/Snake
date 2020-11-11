@@ -103,6 +103,11 @@ type Snake =
         member self.ToGameFieldList ()=
             self.Head :: self.SnakeElements
 
+        member self.Last ()=
+            match self.SnakeElements.IsEmpty with
+                | true -> self.Head
+                | false -> self.SnakeElements |> List.last
+
 type MatchFieldState = {MatchField:MultiArraySegment<GameFieldType>}
     with
         member self.Clean ()=
@@ -131,7 +136,7 @@ type SnakeAkkumulator =
             if head.IsNone then
                 failwith "The Snake lost its head!"
             else
-                {Head=head.Value;SnakeElements=self.NewSnakeElements}
+                {Head=head.Value;SnakeElements=self.NewSnakeElements.Tail}
 
 type AppleGenerator =
     {
