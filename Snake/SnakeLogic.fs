@@ -53,7 +53,8 @@ module SnakeLogic =
         {newSnake with SnakeElements = newSnake.SnakeElements @ lastElementList}
 
     let isSnakeTouchingItself (snake:Snake) =
+        let sneakHead = snake.Head.ToStaticField ()
         snake.SnakeElements
         |> List.map (fun x -> x.ToStaticField())
-        |> List.tryFind (fun x -> x = snake.Head.ToStaticField ())
+        |> List.tryFind (fun x -> x = sneakHead)
         |> Option.isSome
