@@ -45,7 +45,7 @@ module Game =
         let scoreArea = ArraySegment.Create(completeGameField, TwoDimensions.First, 1,(maxIndexX-1), 1)
         let matchField = MultiArraySegment.Create( completeGameField, 1, 4 ,maxMatchfieldX, maxMatchfieldY)
         let score = {ScoreFields = scoreArea}
-        let matchT = {MatchField = matchField}
+
         {
         Score = 0
         CompleteMatchField = completeGameField
@@ -149,8 +149,11 @@ module Game =
                 res
 
         do nextRes.Matchfield.Clean()
-        do nextRes.Matchfield.WriteApple res.AppleGen.Apple
-        do nextRes.Matchfield.WriteSnake newSnake
+        if nextRes.Status.IsActive () then
+            do nextRes.Matchfield.WriteApple res.AppleGen.Apple
+            do nextRes.Matchfield.WriteSnake newSnake
+        else
+            do nextRes.Matchfield.WriteGameFinish nextRes.Status
 
         nextRes
 

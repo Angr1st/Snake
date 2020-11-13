@@ -121,6 +121,25 @@ type MatchFieldState = {MatchField:MultiArraySegment<GameFieldType>}
         member self.WriteApple (apple:StaticField) =
             self.MatchField.[apple.X, apple.Y] <- Apple apple
 
+        member self.WriteGameFinish gameState =
+            let middleRowIndex = 10
+
+            let writeMessage (text:string) =
+                let writeChar index cha =
+                    self.MatchField.[ 9 + index, middleRowIndex] <- ScoreField cha
+                    index + 1
+                
+                text.ToCharArray()
+                |> Array.fold writeChar 0 
+                |> ignore
+
+            match gameState with
+            | Won score ->
+                writeMessage <| sprintf "Won %i" score 
+            | Lost score ->
+                 writeMessage <| sprintf "Lost %i" score 
+            | _ -> ()
+
 type SnakeAkkumulator = 
     {
         NewSnakeElements:GameField list
