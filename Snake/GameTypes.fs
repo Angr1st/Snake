@@ -66,9 +66,9 @@ type GameFieldType =
         member g.Display() =
             match g with
             | Empty -> ' '
-            | Apple _-> 'O'
-            | SnakeHead _-> '■'
-            | SnakeBody _-> '■'
+            | Apple _-> '@'
+            | SnakeHead _-> '█'
+            | SnakeBody _-> '█'
             | HorizontalBorder _-> '═'
             | VerticalBorder _-> '║'
             | UpperLeftCorner _-> '╔'
