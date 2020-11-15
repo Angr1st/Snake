@@ -5,8 +5,59 @@ open System
 open System.Diagnostics
 open System.Threading
 open Snake.GameConstants
+open Snake.SnakeLogic
+open Snake.ScoreBoardLogic
+open Snake.GameFieldLogic
 
 module Game =
+    
+    let IsActive gameState =
+        match gameState with
+        | Init | Running -> true
+        | _ -> false
+
+    let Clean matchFieldState =
+        matchFieldState.MatchField.SetAllFields Empty
+        
+    let WriteSnake matchFieldState snake =
+        matchFieldState.MatchField.[snake.Head.X, snake.Head.Y] <- ToGameFieldType snake
+        snake.SnakeElements
+        |> List.iter (fun body -> matchFieldState.MatchField.[body.X, body.Y] <- SnakeBody body)
+
+    let WriteApple matchFieldState (apple:StaticField) =
+        matchFieldState.MatchField.[apple.X, apple.Y] <- Apple apple
+
+    let WriteGameFinish matchFieldState gameState =
+        let middleRowIndex = 10    
+        let writeMessage (text:string) =
+            let writeChar index cha =
+                matchFieldState.MatchField.[ 9 + index, middleRowIndex] <- ScoreField cha
+                index + 1
+                    
+            text.ToCharArray()
+            |> Array.fold writeChar 0 
+            |> ignore
+    
+        match gameState with
+        | Won score ->
+            writeMessage <| sprintf "Won %i" score 
+        | Lost score ->
+                writeMessage <| sprintf "Lost %i" score 
+        | _ -> ()
+
+    let GenerateNewApple appleGenerator (blockedFields:GameField list) maxX maxY=
+        let rec findFreeField () =
+            let nextX = appleGenerator.RandomGenerator.Next(maxX)
+            let nextY = appleGenerator.RandomGenerator.Next(maxY)
+            if blockedFields 
+                |> List.tryFind (fun t -> t.X = nextX && t.Y = nextY)
+                |> Option.isNone then
+                {X=nextX;Y=nextY}
+            else
+                findFreeField ()
+
+        {appleGenerator with Apple = findFreeField()}
+
     let SetupBorder (completeGameField:GameFieldType[,]) =
         completeGameField.[0,maxIndexY] <- UpperLeftCorner {X=0;Y=maxIndexY}
         completeGameField.[maxIndexX,maxIndexY] <- UpperRightCorner {X=maxIndexX;Y=maxIndexY}
@@ -58,7 +109,7 @@ module Game =
         }
 
     let PrintGame state =
-        state.ScoreArea.SetScore state.Score
+        SetScore state.ScoreArea state.Score
         System.Console.Clear()
         for i = maxIndexY downto 0 do
             for j = 0 to maxIndexX do
@@ -121,8 +172,8 @@ module Game =
 
     let GetInput'' = GetInput tick
 
-    let GetNewApple (appleGen:AppleGenerator) (snake:Snake) =
-        appleGen.GenerateNewApple (snake.ToGameFieldList ()) GameConstants.maxMatchfieldX GameConstants.maxMatchfieldY
+    let GetNewApple appleGen snake =
+        GenerateNewApple appleGen (ToGameFieldList snake) GameConstants.maxMatchfieldX GameConstants.maxMatchfieldY
 
     let GameLoop (input:Direction -> Direction) (state:GlobalGameState) :GlobalGameState=
         let initGame innerState =
@@ -140,20 +191,20 @@ module Game =
         let nextRes =  
             if SnakeLogic.isSnakeTouchingItself res.Snake then
                 {res with Status = Lost res.Score}
-            elif res.Snake.Head.ToStaticField() = res.AppleGen.Apple then
+            elif ToStaticField res.Snake.Head = res.AppleGen.Apple then
                 let newScore = res.Score + 5;
-                do res.ScoreArea.SetScore newScore
+                do SetScore res.ScoreArea newScore
                 let longerSnake = SnakeLogic.addNewSnakeElement state.Snake newSnake
                 {res with AppleGen = GetNewApple res.AppleGen res.Snake; Score = newScore; Snake = longerSnake}
             else
                 res
 
-        do nextRes.Matchfield.Clean()
-        if nextRes.Status.IsActive () then
-            do nextRes.Matchfield.WriteApple res.AppleGen.Apple
-            do nextRes.Matchfield.WriteSnake newSnake
+        do Clean nextRes.Matchfield
+        if IsActive nextRes.Status then
+            do WriteApple nextRes.Matchfield res.AppleGen.Apple
+            do WriteSnake nextRes.Matchfield newSnake
         else
-            do nextRes.Matchfield.WriteGameFinish nextRes.Status
+            do WriteGameFinish nextRes.Matchfield nextRes.Status
 
         nextRes
 
