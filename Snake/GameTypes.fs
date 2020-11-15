@@ -10,11 +10,6 @@ type GameState =
     | Running
     | Won of int
     | Lost of int
-    with 
-        member self.IsActive ()=
-            match self with
-            | Init | Running -> true
-            | _ -> false
 
 type TurnDirection =
     | LeftTurn = 0
@@ -36,8 +31,6 @@ type StaticField =
     X:int
     Y:int
     }
-    member s.ToGameField direction=
-        {X=s.X;Y=s.Y;MoveDirection=direction}
 
 and GameField =
     {
@@ -45,8 +38,6 @@ and GameField =
     Y:int //up and down
     MoveDirection:Direction
     }
-    member s.ToStaticField() =
-        {X=s.X;Y=s.Y}
 
 type GameFieldType =
     | HorizontalBorder of StaticField
@@ -66,9 +57,9 @@ type GameFieldType =
         member g.Display() =
             match g with
             | Empty -> ' '
-            | Apple _-> 'O'
-            | SnakeHead _-> '■'
-            | SnakeBody _-> '■'
+            | Apple _-> '@'
+            | SnakeHead _-> '█'
+            | SnakeBody _-> '█'
             | HorizontalBorder _-> '═'
             | VerticalBorder _-> '║'
             | UpperLeftCorner _-> '╔'
@@ -80,82 +71,26 @@ type GameFieldType =
             | ScoreField c-> c
 
 type ScoreBoard = {ScoreFields:ArraySegment<GameFieldType>}
-    with 
-        member self.SetScore value =
-            let stringValue = value.ToString().PadLeft(self.ScoreFields.Length, ' ').ToCharArray()
-
-            for i = self.ScoreFields.Length - 1 downto 0 do
-                let ch = stringValue.[i]
-                let field = match ch with
-                            | ' ' -> Empty
-                            | x -> ScoreField x
-                self.ScoreFields.[i] <- field
 
 type Snake = 
     {
         Head:GameField
         SnakeElements:GameField list
     }
-    with
-        member self.ToGameFieldType ()=
-            SnakeHead self.Head
 
-        member self.ToGameFieldList ()=
-            self.Head :: self.SnakeElements
-
-        member self.Last ()=
-            match self.SnakeElements.IsEmpty with
-                | true -> self.Head
-                | false -> self.SnakeElements |> List.last
-
-type MatchFieldState = {MatchField:MultiArraySegment<GameFieldType>}
-    with
-        member self.Clean ()=
-            self.MatchField.SetAllFields Empty
-
-        member self.WriteSnake (snake:Snake) =
-            self.MatchField.[snake.Head.X, snake.Head.Y] <- snake.ToGameFieldType()
-            snake.SnakeElements
-            |> List.iter (fun body -> self.MatchField.[body.X, body.Y] <- SnakeBody body)
-
-        member self.WriteApple (apple:StaticField) =
-            self.MatchField.[apple.X, apple.Y] <- Apple apple
+type MatchFieldState = {MatchField:MultiArraySegment<GameFieldType>}         
 
 type SnakeAkkumulator = 
     {
         NewSnakeElements:GameField list
         MovementDirection:Direction
     }
-    with
-        member self.NewSnakeHead ()=
-            self.NewSnakeElements
-            |> List.tryHead
-
-        member self.ToSnake ()=
-            let head = self.NewSnakeHead()
-            if head.IsNone then
-                failwith "The Snake lost its head!"
-            else
-                {Head=head.Value;SnakeElements=self.NewSnakeElements.Tail}
 
 type AppleGenerator =
     {
     Apple:StaticField
     RandomGenerator:System.Random
     }
-    with 
-        member self.GenerateNewApple (blockedFields:GameField list) maxX maxY=
-            let rec findFreeField () =
-                let nextX = self.RandomGenerator.Next(maxX)
-                let nextY = self.RandomGenerator.Next(maxY)
-                if blockedFields 
-                    |> List.tryFind (fun t -> t.X = nextX && t.Y = nextY)
-                    |> Option.isNone then
-                    {X=nextX;Y=nextY}
-                else
-                    findFreeField ()
-
-            {self with Apple = findFreeField()}
 
 type GlobalGameState = 
     {
@@ -182,4 +117,23 @@ module GameConstants =
 
     let maxMatchfieldY = maxIndexY - 5
 
-    let tick :int64 = 1000L //ms
+    let tick :int64 = 800L //ms
+
+
+module ScoreBoardLogic =
+    let SetScore scoreBoard value =
+        let stringValue = value.ToString().PadLeft(scoreBoard.ScoreFields.Length, ' ').ToCharArray()
+
+        for i = scoreBoard.ScoreFields.Length - 1 downto 0 do
+            let ch = stringValue.[i]
+            let field = match ch with
+                        | ' ' -> Empty
+                        | x -> ScoreField x
+            scoreBoard.ScoreFields.[i] <- field
+
+module GameFieldLogic =
+    let ToGameField staticField direction=
+        {X=staticField.X;Y=staticField.Y;MoveDirection=direction}
+
+    let ToStaticField gameField =
+        {X=gameField.X;Y=gameField.Y}

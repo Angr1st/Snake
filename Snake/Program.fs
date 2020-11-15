@@ -4,10 +4,10 @@ open Game
 
 module Program =
 
-    let execGame (state:GlobalGameState) = 
+    let execGame state = 
         let mutable innerState = state
 
-        while innerState.Status.IsActive() do
+        while IsActive innerState.Status do
             innerState <- GameLoop' innerState 
             PrintGame innerState
 
