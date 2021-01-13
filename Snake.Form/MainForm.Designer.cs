@@ -48,7 +48,6 @@ namespace Snake.FormLib
             this.btn_Start.TabIndex = 0;
             this.btn_Start.Text = "Start";
             this.btn_Start.UseVisualStyleBackColor = true;
-            this.btn_Start.Click += new System.EventHandler(this.btn_Start_Click);
             // 
             // gb_Score
             // 
@@ -99,8 +98,6 @@ namespace Snake.FormLib
             this.MinimumSize = new System.Drawing.Size(488, 580);
             this.Name = "MainForm";
             this.Text = "Snake.NET";
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MainForm_KeyPress);
-            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.gb_Score.ResumeLayout(false);
             this.gb_Score.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb_default)).EndInit();
@@ -113,7 +110,7 @@ namespace Snake.FormLib
         public System.Windows.Forms.Button btn_Start;
         private System.Windows.Forms.GroupBox gb_Score;
         public System.Windows.Forms.Label lb_Score;
-        private System.Windows.Forms.PictureBox pb_default;
+        public System.Windows.Forms.PictureBox pb_default;
     }
 }
 
