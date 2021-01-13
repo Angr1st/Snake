@@ -22,7 +22,7 @@ namespace Snake.FormLib.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Snake.FormLib.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Snake.FormLib.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace Snake.FormLib.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Avocado {
+        public static System.Drawing.Bitmap Snake_Avocado {
             get {
                 object obj = ResourceManager.GetObject("Snake_Avocado", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -73,7 +73,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Banane {
+        public static System.Drawing.Bitmap Snake_Banane {
             get {
                 object obj = ResourceManager.GetObject("Snake_Banane", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -83,7 +83,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Birne {
+        public static System.Drawing.Bitmap Snake_Birne {
             get {
                 object obj = ResourceManager.GetObject("Snake_Birne", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -93,7 +93,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Ecke_links_oben {
+        public static System.Drawing.Bitmap Snake_Ecke_links_oben {
             get {
                 object obj = ResourceManager.GetObject("Snake_Ecke_links_oben", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -103,7 +103,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Ecke_oben_rechts {
+        public static System.Drawing.Bitmap Snake_Ecke_oben_rechts {
             get {
                 object obj = ResourceManager.GetObject("Snake_Ecke_oben_rechts", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -113,7 +113,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Ecke_rechts_unten {
+        public static System.Drawing.Bitmap Snake_Ecke_rechts_unten {
             get {
                 object obj = ResourceManager.GetObject("Snake_Ecke_rechts_unten", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -123,7 +123,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Ecke_unten_links {
+        public static System.Drawing.Bitmap Snake_Ecke_unten_links {
             get {
                 object obj = ResourceManager.GetObject("Snake_Ecke_unten_links", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -133,7 +133,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Hintergrund {
+        public static System.Drawing.Bitmap Snake_Hintergrund {
             get {
                 object obj = ResourceManager.GetObject("Snake_Hintergrund", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -143,7 +143,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Kopf_links {
+        public static System.Drawing.Bitmap Snake_Kopf_links {
             get {
                 object obj = ResourceManager.GetObject("Snake_Kopf_links", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -153,7 +153,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Kopf_oben {
+        public static System.Drawing.Bitmap Snake_Kopf_oben {
             get {
                 object obj = ResourceManager.GetObject("Snake_Kopf_oben", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -163,7 +163,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Kopf_rechts {
+        public static System.Drawing.Bitmap Snake_Kopf_rechts {
             get {
                 object obj = ResourceManager.GetObject("Snake_Kopf_rechts", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -173,7 +173,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Kopf_unten {
+        public static System.Drawing.Bitmap Snake_Kopf_unten {
             get {
                 object obj = ResourceManager.GetObject("Snake_Kopf_unten", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -183,7 +183,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Körper_links_rechts {
+        public static System.Drawing.Bitmap Snake_Körper_links_rechts {
             get {
                 object obj = ResourceManager.GetObject("Snake_Körper_links_rechts", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -193,7 +193,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Körper_oben_unten {
+        public static System.Drawing.Bitmap Snake_Körper_oben_unten {
             get {
                 object obj = ResourceManager.GetObject("Snake_Körper_oben_unten", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -203,7 +203,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Schwanz_links {
+        public static System.Drawing.Bitmap Snake_Schwanz_links {
             get {
                 object obj = ResourceManager.GetObject("Snake_Schwanz_links", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -213,7 +213,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Schwanz_oben {
+        public static System.Drawing.Bitmap Snake_Schwanz_oben {
             get {
                 object obj = ResourceManager.GetObject("Snake_Schwanz_oben", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -223,7 +223,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Schwanz_rechts {
+        public static System.Drawing.Bitmap Snake_Schwanz_rechts {
             get {
                 object obj = ResourceManager.GetObject("Snake_Schwanz_rechts", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -233,7 +233,7 @@ namespace Snake.FormLib.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Snake_Schwanz_unten {
+        public static System.Drawing.Bitmap Snake_Schwanz_unten {
             get {
                 object obj = ResourceManager.GetObject("Snake_Schwanz_unten", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));

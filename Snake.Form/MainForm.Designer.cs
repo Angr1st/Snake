@@ -83,6 +83,7 @@ namespace Snake.FormLib
             this.pb_default.Size = new System.Drawing.Size(450, 450);
             this.pb_default.TabIndex = 2;
             this.pb_default.TabStop = false;
+            this.pb_default.Visible = false;
             // 
             // MainForm
             // 
@@ -108,7 +109,7 @@ namespace Snake.FormLib
         #endregion
 
         public System.Windows.Forms.Button btn_Start;
-        private System.Windows.Forms.GroupBox gb_Score;
+        public System.Windows.Forms.GroupBox gb_Score;
         public System.Windows.Forms.Label lb_Score;
         public System.Windows.Forms.PictureBox pb_default;
     }
