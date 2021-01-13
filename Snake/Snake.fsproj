@@ -7,9 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Schlange.ico" />
     <Compile Include="GameTypes.fs" />
     <Compile Include="SnakeLogic.fs" />
     <Compile Include="Game.fs" />
+    <Compile Include="MainFormLogic.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
@@ -21,5 +23,7 @@
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
+
+  <ItemGroup />
 
 </Project>

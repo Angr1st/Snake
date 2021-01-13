@@ -3,7 +3,6 @@
 open Game
 open System
 open System.Windows.Forms
-open Snake.FormLib
 
 module Program =
 
@@ -20,8 +19,10 @@ module Program =
         |> ignore
         Application.EnableVisualStyles()
         Application.SetCompatibleTextRenderingDefault(false)
-        let mainForm = new MainForm()
-        Application.Run(mainForm)
+
+        MainFormLogic.registerEvents MainFormLogic.MainForm
+
+        Application.Run(MainFormLogic.MainForm)
         PrintGame initGame
         initGame
         |> execGame
