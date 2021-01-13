@@ -1,6 +1,9 @@
 ﻿namespace Snake
 
 open Game
+open System
+open System.Windows.Forms
+open Snake.FormLib
 
 module Program =
 
@@ -11,8 +14,14 @@ module Program =
             innerState <- GameLoop' innerState 
             PrintGame innerState
 
-    [<EntryPoint>]
+    [<EntryPoint; STAThread>]
     let main argv =
+        Application.SetHighDpiMode(HighDpiMode.SystemAware)
+        |> ignore
+        Application.EnableVisualStyles()
+        Application.SetCompatibleTextRenderingDefault(false)
+        let mainForm = new MainForm()
+        Application.Run(mainForm)
         PrintGame initGame
         initGame
         |> execGame
