@@ -15,6 +15,7 @@ namespace Snake.FormLib
         private void btn_Start_Click(object sender, EventArgs e)
         {
             gb_Score.Visible = true;
+            btn_Start.Visible = false;
         }
 
         private void MainForm_KeyPress(object sender, KeyPressEventArgs e)
