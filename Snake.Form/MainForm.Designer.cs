@@ -33,14 +33,16 @@ namespace Snake.FormLib
             this.btn_Start = new System.Windows.Forms.Button();
             this.gb_Score = new System.Windows.Forms.GroupBox();
             this.lb_Score = new System.Windows.Forms.Label();
+            this.pb_default = new System.Windows.Forms.PictureBox();
             this.gb_Score.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_default)).BeginInit();
             this.SuspendLayout();
             // 
             // btn_Start
             // 
             this.btn_Start.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_Start.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btn_Start.Location = new System.Drawing.Point(163, 188);
+            this.btn_Start.Location = new System.Drawing.Point(189, 190);
             this.btn_Start.Name = "btn_Start";
             this.btn_Start.Size = new System.Drawing.Size(104, 50);
             this.btn_Start.TabIndex = 0;
@@ -56,7 +58,7 @@ namespace Snake.FormLib
             this.gb_Score.Controls.Add(this.lb_Score);
             this.gb_Score.Location = new System.Drawing.Point(12, 479);
             this.gb_Score.Name = "gb_Score";
-            this.gb_Score.Size = new System.Drawing.Size(409, 48);
+            this.gb_Score.Size = new System.Drawing.Size(447, 48);
             this.gb_Score.TabIndex = 1;
             this.gb_Score.TabStop = false;
             this.gb_Score.Text = "Score";
@@ -68,29 +70,40 @@ namespace Snake.FormLib
             this.lb_Score.Dock = System.Windows.Forms.DockStyle.Right;
             this.lb_Score.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lb_Score.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.lb_Score.Location = new System.Drawing.Point(386, 19);
+            this.lb_Score.Location = new System.Drawing.Point(424, 19);
             this.lb_Score.Name = "lb_Score";
             this.lb_Score.Size = new System.Drawing.Size(20, 23);
             this.lb_Score.TabIndex = 0;
             this.lb_Score.Text = "0";
             this.lb_Score.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // pb_default
+            // 
+            this.pb_default.Location = new System.Drawing.Point(12, 12);
+            this.pb_default.Name = "pb_default";
+            this.pb_default.Size = new System.Drawing.Size(450, 450);
+            this.pb_default.TabIndex = 2;
+            this.pb_default.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(434, 541);
+            this.ClientSize = new System.Drawing.Size(472, 541);
             this.Controls.Add(this.gb_Score);
             this.Controls.Add(this.btn_Start);
+            this.Controls.Add(this.pb_default);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(240, 300);
+            this.MaximumSize = new System.Drawing.Size(488, 580);
+            this.MinimumSize = new System.Drawing.Size(488, 580);
             this.Name = "MainForm";
             this.Text = "Snake.NET";
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MainForm_KeyPress);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.gb_Score.ResumeLayout(false);
             this.gb_Score.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_default)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -100,6 +113,7 @@ namespace Snake.FormLib
         public System.Windows.Forms.Button btn_Start;
         private System.Windows.Forms.GroupBox gb_Score;
         public System.Windows.Forms.Label lb_Score;
+        private System.Windows.Forms.PictureBox pb_default;
     }
 }
 
