@@ -42,7 +42,7 @@ namespace Snake.FormLib
             // 
             this.btn_Start.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_Start.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btn_Start.Location = new System.Drawing.Point(189, 190);
+            this.btn_Start.Location = new System.Drawing.Point(302, 245);
             this.btn_Start.Name = "btn_Start";
             this.btn_Start.Size = new System.Drawing.Size(104, 50);
             this.btn_Start.TabIndex = 0;
@@ -55,9 +55,9 @@ namespace Snake.FormLib
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gb_Score.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.gb_Score.Controls.Add(this.lb_Score);
-            this.gb_Score.Location = new System.Drawing.Point(12, 479);
+            this.gb_Score.Location = new System.Drawing.Point(12, 656);
             this.gb_Score.Name = "gb_Score";
-            this.gb_Score.Size = new System.Drawing.Size(447, 48);
+            this.gb_Score.Size = new System.Drawing.Size(639, 48);
             this.gb_Score.TabIndex = 1;
             this.gb_Score.TabStop = false;
             this.gb_Score.Text = "Score";
@@ -69,7 +69,7 @@ namespace Snake.FormLib
             this.lb_Score.Dock = System.Windows.Forms.DockStyle.Right;
             this.lb_Score.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lb_Score.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.lb_Score.Location = new System.Drawing.Point(424, 19);
+            this.lb_Score.Location = new System.Drawing.Point(616, 19);
             this.lb_Score.Name = "lb_Score";
             this.lb_Score.Size = new System.Drawing.Size(20, 23);
             this.lb_Score.TabIndex = 0;
@@ -80,7 +80,7 @@ namespace Snake.FormLib
             // 
             this.pb_default.Location = new System.Drawing.Point(12, 12);
             this.pb_default.Name = "pb_default";
-            this.pb_default.Size = new System.Drawing.Size(450, 450);
+            this.pb_default.Size = new System.Drawing.Size(640, 640);
             this.pb_default.TabIndex = 2;
             this.pb_default.TabStop = false;
             this.pb_default.Visible = false;
@@ -90,13 +90,13 @@ namespace Snake.FormLib
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(472, 541);
+            this.ClientSize = new System.Drawing.Size(664, 718);
             this.Controls.Add(this.gb_Score);
             this.Controls.Add(this.btn_Start);
             this.Controls.Add(this.pb_default);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(488, 580);
-            this.MinimumSize = new System.Drawing.Size(488, 580);
+            this.MaximumSize = new System.Drawing.Size(680, 757);
+            this.MinimumSize = new System.Drawing.Size(680, 757);
             this.Name = "MainForm";
             this.Text = "Snake.NET";
             this.gb_Score.ResumeLayout(false);
