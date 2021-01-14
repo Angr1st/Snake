@@ -14,8 +14,8 @@ module MainFormLogic =
 
         let tileSize = new Size(64,64)
 
-        for x = 0 to 9 do
-            for y = 0 to 9 do
+        for x = 0 to GameConstants.maxIndexX do
+            for y = 0 to GameConstants.maxIndexY do
                 let newTile = new PictureBox()
                 do mainForm.Controls.Add(newTile)
                 do newTile.Location <- new Point(12 + x * 64, 12 + y * 64)
