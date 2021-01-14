@@ -1,9 +1,12 @@
 ﻿namespace Snake
 
+open Snake.FormLib.Properties
 open Snake.Lib
+open System.Windows.Forms
+open System.Drawing
 
 type IDisplayable =
-    abstract Display: unit -> char
+    abstract Display: unit -> Bitmap
 
 type GameState =
     | Init
@@ -21,6 +24,11 @@ type Direction =
     | Left
     | Right
 
+type FruitType =
+    | Avocado
+    | Banana
+    | Pear
+
 type UserInput =
     | Direction of Direction
     | Waiting
@@ -30,59 +38,90 @@ type StaticField =
     {
     X:int
     Y:int
+    Tile:PictureBox
     }
 
-and GameField =
+and SnakeField =
     {
     X:int //left and right
     Y:int //up and down
     MoveDirection:Direction
+    Tile:PictureBox
     }
 
-type GameFieldType =
-    | HorizontalBorder of StaticField
-    | VerticalBorder of StaticField
-    | UpperLeftCorner of StaticField
-    | LowerLeftCorner of StaticField
-    | LeftThreeWay of StaticField
-    | RightThreeWay of StaticField
-    | UpperRightCorner of StaticField
-    | LowerRightCorner of StaticField
-    | Empty
-    | Apple of StaticField
-    | SnakeHead of GameField
-    | SnakeBody of GameField
-    | ScoreField of char
+and SnakeBodyField =
+    {
+    X:int //left and right
+    Y:int //up and down
+    OldMoveDirection:Direction
+    NewMoveDirection:Direction
+    Tile:PictureBox
+    }
+
+and FruitField =
+    {
+    X:int //left and right
+    Y:int //up and down
+    FruitType:FruitType
+    Tile:PictureBox
+    }
+
+type SnakeFieldType =
+    | SnakeHead of SnakeField
+    | SnakeBody of SnakeBodyField
+    | SnakeTail of SnakeField
     interface IDisplayable with
         member g.Display() =
             match g with
-            | Empty -> ' '
-            | Apple _-> '@'
-            | SnakeHead _-> '█'
-            | SnakeBody _-> '█'
-            | HorizontalBorder _-> '═'
-            | VerticalBorder _-> '║'
-            | UpperLeftCorner _-> '╔'
-            | UpperRightCorner _-> '╗'
-            | LowerLeftCorner _-> '╚'
-            | LowerRightCorner _-> '╝'
-            | LeftThreeWay _-> '╣'
-            | RightThreeWay _-> '╠'
-            | ScoreField c-> c
+            | SnakeHead gf->
+                match gf.MoveDirection with
+                | Down -> Resources.Snake_Kopf_oben
+                | Up -> Resources.Snake_Kopf_unten
+                | Right -> Resources.Snake_Kopf_links
+                | Left -> Resources.Snake_Kopf_rechts
+            | SnakeBody sb->
+                match sb.NewMoveDirection, sb.OldMoveDirection with
+                | Up, Up | Down,Down -> Resources.Snake_Körper_oben_unten
+                | Left, Left | Right, Right -> Resources.Snake_Körper_links_rechts
+                | Left, Up | Up, Left -> Resources.Snake_Ecke_links_oben
+                | Up, Right | Right, Up -> Resources.Snake_Ecke_oben_rechts
+                | Left, Down | Down, Left -> Resources.Snake_Ecke_unten_links
+                | Right, Down | Down, Right -> Resources.Snake_Ecke_rechts_unten
+                | _,_ -> failwith "This combination of old and new movedirection is illegal!!!"
+            | SnakeTail gf ->
+                match gf.MoveDirection with
+                | Up -> Resources.Snake_Schwanz_oben
+                | Down -> Resources.Snake_Schwanz_unten
+                | Left -> Resources.Snake_Schwanz_links
+                | Right -> Resources.Snake_Schwanz_rechts
 
-type ScoreBoard = {ScoreFields:ArraySegment<GameFieldType>}
+type GameFieldType =
+    | Empty of StaticField
+    | Apple of FruitField
+    | SnakeField of SnakeFieldType
+    interface IDisplayable with
+        member g.Display() =
+            match g with
+            | Empty _-> Resources.Snake_Hintergrund
+            | Apple ff ->
+                match ff.FruitType with
+                | Avocado -> Resources.Snake_Avocado
+                | Banana -> Resources.Snake_Banane
+                | Pear -> Resources.Snake_Birne
+            | SnakeField s -> (s :> IDisplayable).Display()
 
 type Snake = 
     {
-        Head:GameField
-        SnakeElements:GameField list
+        Head:SnakeField
+        SnakeElements:SnakeBodyField list
+        Tail: SnakeField
     }
 
 type MatchFieldState = {MatchField:MultiArraySegment<GameFieldType>}         
 
 type SnakeAkkumulator = 
     {
-        NewSnakeElements:GameField list
+        NewSnakeElements:SnakeFieldType list
         MovementDirection:Direction
     }
 
@@ -97,7 +136,6 @@ type GlobalGameState =
     Score:int
     CompleteMatchField:GameFieldType[,]
     Matchfield:MatchFieldState
-    ScoreArea:ScoreBoard
     CurrentDirection:Direction
     Status:GameState
     Snake:Snake
@@ -105,17 +143,13 @@ type GlobalGameState =
     }
 
 module GameConstants =
-    let maxX = 25
+    let maxX = 10
     
-    let maxY = maxX + 3
+    let maxY = maxX
     
     let maxIndexX = maxX - 1
     
-    let maxIndexY = maxY - 1
-
-    let maxMatchfieldX = maxIndexX - 2
-
-    let maxMatchfieldY = maxIndexY - 5
+    let maxIndexY = maxIndexX
 
     let tick :int64 = 800L //ms
 
