@@ -127,15 +127,14 @@ type SnakeAkkumulator =
 
 type AppleGenerator =
     {
-    Apple:StaticField
+    Apple:FruitField
     RandomGenerator:System.Random
     }
 
 type GlobalGameState = 
     {
     Score:int
-    CompleteMatchField:GameFieldType[,]
-    Matchfield:MatchFieldState
+    Matchfield:GameFieldType[,]
     CurrentDirection:Direction
     Status:GameState
     Snake:Snake
@@ -155,19 +154,14 @@ module GameConstants =
 
 
 module ScoreBoardLogic =
-    let SetScore scoreBoard value =
-        let stringValue = value.ToString().PadLeft(scoreBoard.ScoreFields.Length, ' ').ToCharArray()
+    let SetScore (scoreBoard:Label) value =
+        let stringValue = value.ToString()
 
-        for i = scoreBoard.ScoreFields.Length - 1 downto 0 do
-            let ch = stringValue.[i]
-            let field = match ch with
-                        | ' ' -> Empty
-                        | x -> ScoreField x
-            scoreBoard.ScoreFields.[i] <- field
+        scoreBoard.Text <- stringValue
 
 module GameFieldLogic =
-    let ToGameField staticField direction=
-        {X=staticField.X;Y=staticField.Y;MoveDirection=direction}
+    let ToSnakeHeadField (staticField:StaticField) direction : SnakeField=
+        {X=staticField.X;Y=staticField.Y;MoveDirection=direction;Tile=staticField.Tile}
 
-    let ToStaticField gameField =
-        {X=gameField.X;Y=gameField.Y}
+    let ToStaticField (gameField:SnakeField):StaticField =
+        {X=gameField.X;Y=gameField.Y;Tile=gameField.Tile}
