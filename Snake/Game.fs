@@ -8,6 +8,7 @@ open Snake.GameConstants
 open Snake.SnakeLogic
 open Snake.ScoreBoardLogic
 open Snake.GameFieldLogic
+open System.Windows.Forms
 
 module Game =
     
@@ -119,20 +120,20 @@ module Game =
                 else
                     printfn "%c" symbol
 
-    let MatchKeyToDirection currentDirection (input:ConsoleKeyInfo)=
-        match input.Key, currentDirection with
-        | ConsoleKey.UpArrow, Up -> Direction Up
-        | ConsoleKey.UpArrow, Left -> Direction Up
-        | ConsoleKey.UpArrow, Right -> Direction Up
-        | ConsoleKey.DownArrow, Down -> Direction Down
-        | ConsoleKey.DownArrow, Left -> Direction Down
-        | ConsoleKey.DownArrow, Right -> Direction Down
-        | ConsoleKey.LeftArrow, Left -> Direction Left
-        | ConsoleKey.LeftArrow, Up -> Direction Left
-        | ConsoleKey.LeftArrow, Down -> Direction Left
-        | ConsoleKey.RightArrow, Right -> Direction Right
-        | ConsoleKey.RightArrow, Up -> Direction Right
-        | ConsoleKey.RightArrow, Down -> Direction Right
+    let MatchKeyToDirection currentDirection (input:Keys)=
+        match input, currentDirection with
+        | (Keys.Up | Keys.W), Up -> Direction Up
+        | (Keys.Up | Keys.W), Left -> Direction Up
+        | (Keys.Up | Keys.W), Right -> Direction Up
+        | (Keys.Down | Keys.S), Down -> Direction Down
+        | (Keys.Down | Keys.S), Left -> Direction Down
+        | (Keys.Down | Keys.S), Right -> Direction Down
+        | (Keys.Left | Keys.A), Left -> Direction Left
+        | (Keys.Left | Keys.A), Up -> Direction Left
+        | (Keys.Left | Keys.A), Down -> Direction Left
+        | (Keys.Right | Keys.D), Right -> Direction Right
+        | (Keys.Right | Keys.D), Up -> Direction Right
+        | (Keys.Right | Keys.D), Down -> Direction Right
         | _ -> NoInput
 
     let private stopWatch = Stopwatch()
